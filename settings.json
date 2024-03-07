@@ -1,0 +1,7 @@
+﻿{
+  "Properties": {
+    "url": "localhost",
+    "port": 10000,
+    "databaseUrl": "mongodb://localhost:27017"
+  }
+}
