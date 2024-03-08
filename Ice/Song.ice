@@ -13,9 +13,9 @@
 
     interface FileUploader
     {
-        void startUpload(SongData songData);
+        string startUpload(SongData songData);
         void sendChunk(Bytes data, string uniqueId, int pos);
-        void completeUpload(string uniqueId, string title);
+        void completeUpload(string uniqueId);
     };
 
     interface FileDownloader 
@@ -27,7 +27,7 @@
 
     interface FileSender
     {
-        void sendFile(FileDownloader* proxy, string title);
+        void sendFile(FileDownloader* proxy, string songId);
     };
 
     interface SongDataModule 
@@ -35,6 +35,6 @@
          Songs searchByTitle(string search);
          Songs searchByArtist(string search);
          void updateSong(SongData songData);
-         void deleteSong(int songId);
+         void deleteSong(string songId);
     }; 
 };

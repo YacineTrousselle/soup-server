@@ -30,10 +30,4 @@
         Strings artists;
         int filesize;
     };
-    
-    interface Test {
-        void startDownload(SongData songData);
-        void sendPacket(Bytes data, int pos);
-        void endDownload();
-    };
 };

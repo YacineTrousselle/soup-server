@@ -2,6 +2,7 @@
   "Properties": {
     "url": "localhost",
     "port": 10000,
-    "databaseUrl": "mongodb://localhost:27017"
+    "databaseUrl": "mongodb://localhost:27017",
+    "songsPath": "C:\\Users\\yacin\\Music\\songs"
   }
 }

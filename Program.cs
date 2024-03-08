@@ -24,7 +24,7 @@ namespace FirstServer
                     var adapter =
                         communicator.createObjectAdapterWithEndpoints("SoupAdapter",
                             $"default -h {args[0]} -p {args[1]}");
-                    InitSoup(adapter);
+                    InitSoup(adapter, _client);
                     adapter.activate();
                     Console.Out.WriteLine("Server is running...");
                     communicator.waitForShutdown();
@@ -39,27 +39,30 @@ namespace FirstServer
             return 0;
         }
 
-        private void InitSoup(ObjectAdapter adapter)
+        private void InitSoup(ObjectAdapter adapter, MongoDbService mongoDbService)
         {
-            adapter.add(new FileDownloaderI(), Util.stringToIdentity("Soup.FileDownloader"));
-            adapter.add(new FileUploaderI(), Util.stringToIdentity("Soup.FileUploader"));
-            adapter.add(new FileSenderI(), Util.stringToIdentity("Soup.FileSender"));
+            adapter.add(new FileUploaderI(mongoDbService), Util.stringToIdentity("Soup.FileUploader"));
+            adapter.add(new FileSenderI(mongoDbService), Util.stringToIdentity("Soup.FileSender"));
             adapter.add(new SongDataModuleI(), Util.stringToIdentity("Soup.SongDataModule"));
         }
     }
 
     public class Program
     {
+        public static string SongPath;
+        
         public static int Main(string[] args)
         {
+            Console.WriteLine(Environment.CurrentDirectory + " " + Directory.GetCurrentDirectory());
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("settings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot configuration = builder.Build();
-            checkConfig(configuration);
-
+                .AddJsonFile("settings.json", optional: false, reloadOnChange: true);
+            IConfiguration configuration = builder.Build().GetSection("Properties");
+            CheckConfig(configuration);
+            
             var client = new MongoDbService(configuration["databaseUrl"]);
-
+            SongPath = configuration["songsPath"];
+            
             Application application = new ApplicationI(client);
 
             return application.main([
@@ -68,9 +71,9 @@ namespace FirstServer
             ]);
         }
 
-        private static void checkConfig(IConfigurationRoot configuration)
+        private static void CheckConfig(IConfiguration configuration)
         {
-            string[] necessaryKeys = ["url", "port", "databaseUrl"];
+            string[] necessaryKeys = ["url", "port", "databaseUrl", "songsPath"];
             foreach (var necessaryKey in necessaryKeys)
             {
                 ArgumentNullException.ThrowIfNull(configuration[necessaryKey]);
