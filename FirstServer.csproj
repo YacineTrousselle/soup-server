@@ -8,10 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="LibVLCSharp" Version="3.8.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
       <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
       <PackageReference Include="NAudio" Version="2.2.1" />
+      <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
       <PackageReference Include="zeroc.ice.net" Version="3.7.10" />
       <PackageReference Include="zeroc.icebuilder.msbuild" Version="5.0.9" />
     </ItemGroup>

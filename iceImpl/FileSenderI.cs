@@ -17,7 +17,7 @@ public class FileSenderI: FileSenderDisp_
         {
             throw new Exception("File not found");
         }
-
+    
         string uniqueId = Guid.NewGuid().ToString();
         var data = File.ReadAllBytes(path);
         for (int offset = 0, i = 0; offset < data.Length; offset += ChunkSize, i++)
@@ -26,7 +26,7 @@ public class FileSenderI: FileSenderDisp_
             byte[] chunk = data.Slice(offset, length);
             dataReceiverProxy.receiveChunk(chunk, uniqueId, i);
         }
-
+    
         dataReceiverProxy.completeTransfer(uniqueId);
         dataReceiverProxy.ice_flushBatchRequests();
     }

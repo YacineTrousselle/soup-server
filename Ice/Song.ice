@@ -1,12 +1,14 @@
 ﻿module Soup
 {
+    const int ChunkSize = 65536;
     sequence<byte> Bytes;
     sequence<string> Strings;
     
     struct SongData {
+        string id = null;
         string title;
         Strings artists;
-        int filesize;
+        int filesize = 0;
     };
 
     sequence<SongData> Songs;
@@ -18,16 +20,10 @@
         void completeUpload(string uniqueId);
     };
 
-    interface FileDownloader 
-    {
-        void startDownload(SongData songData);
-        void sendPacket(Bytes data, int pos);
-        void endDownload();
-    };
-
     interface FileSender
     {
-        void sendFile(FileDownloader* proxy, string songId);
+        SongData getSongData(string songId);
+        Bytes getChunk(string songId, int pos);
     };
 
     interface SongDataModule 
@@ -36,5 +32,12 @@
          Songs searchByArtist(string search);
          void updateSong(SongData songData);
          void deleteSong(string songId);
-    }; 
+    };
+
+    interface AudioPlayer {
+        string initializeAudioPlayer(string songId);
+        void play(string rtspUrl);
+        void pause(string rtspUrl);
+        void close(string rtspUrl);
+    };
 };

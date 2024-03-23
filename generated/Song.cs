@@ -20,6 +20,12 @@ using _System = global::System;
 
 namespace Soup
 {
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    public abstract class ChunkSize
+    {
+        public const int value = 65536;
+    }
+
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704")]
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707")]
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709")]
@@ -34,6 +40,9 @@ namespace Soup
     public partial class SongData : global::System.ICloneable
     {
         #region Slice data members
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+        public string id;
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
         public string title;
@@ -53,13 +62,16 @@ namespace Soup
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
         public SongData()
         {
+            this.id = "";
             this.title = "";
+            this.filesize = 0;
             ice_initialize();
         }
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-        public SongData(string title, string[] artists, int filesize)
+        public SongData(string id, string title, string[] artists, int filesize)
         {
+            this.id = id;
             this.title = title;
             this.artists = artists;
             this.filesize = filesize;
@@ -85,6 +97,7 @@ namespace Soup
         {
             int h_ = 5381;
             global::IceInternal.HashUtil.hashAdd(ref h_, "::Soup::SongData");
+            global::IceInternal.HashUtil.hashAdd(ref h_, id);
             global::IceInternal.HashUtil.hashAdd(ref h_, title);
             global::IceInternal.HashUtil.hashAdd(ref h_, artists);
             global::IceInternal.HashUtil.hashAdd(ref h_, filesize);
@@ -107,6 +120,20 @@ namespace Soup
                 return false;
             }
             SongData o = (SongData)other;
+            if(this.id == null)
+            {
+                if(o.id != null)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if(!this.id.Equals(o.id))
+                {
+                    return false;
+                }
+            }
             if(this.title == null)
             {
                 if(o.title != null)
@@ -165,6 +192,7 @@ namespace Soup
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
         public void ice_writeMembers(global::Ice.OutputStream ostr)
         {
+            ostr.writeString(this.id);
             ostr.writeString(this.title);
             StringsHelper.write(ostr, this.artists);
             ostr.writeInt(this.filesize);
@@ -173,6 +201,7 @@ namespace Soup
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
         public void ice_readMembers(global::Ice.InputStream istr)
         {
+            this.id = istr.readString();
             this.title = istr.readString();
             this.artists = StringsHelper.read(istr);
             this.filesize = istr.readInt();
@@ -230,21 +259,6 @@ namespace Soup
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720")]
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722")]
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724")]
-    public partial interface FileDownloader : global::Ice.Object, FileDownloaderOperations_
-    {
-    }
-
-    [global::System.Runtime.InteropServices.ComVisible(false)]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722")]
-    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724")]
     public partial interface FileSender : global::Ice.Object, FileSenderOperations_
     {
     }
@@ -263,6 +277,21 @@ namespace Soup
     public partial interface SongDataModule : global::Ice.Object, SongDataModuleOperations_
     {
     }
+
+    [global::System.Runtime.InteropServices.ComVisible(false)]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724")]
+    public partial interface AudioPlayer : global::Ice.Object, AudioPlayerOperations_
+    {
+    }
 }
 
 namespace Soup
@@ -277,16 +306,10 @@ namespace Soup
     public delegate void Callback_FileUploader_completeUpload();
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-    public delegate void Callback_FileDownloader_startDownload();
+    public delegate void Callback_FileSender_getSongData(SongData ret);
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-    public delegate void Callback_FileDownloader_sendPacket();
-
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-    public delegate void Callback_FileDownloader_endDownload();
-
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-    public delegate void Callback_FileSender_sendFile();
+    public delegate void Callback_FileSender_getChunk(byte[] ret);
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
     public delegate void Callback_SongDataModule_searchByTitle(SongData[] ret);
@@ -299,6 +322,18 @@ namespace Soup
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
     public delegate void Callback_SongDataModule_deleteSong();
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    public delegate void Callback_AudioPlayer_initializeAudioPlayer(string ret);
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    public delegate void Callback_AudioPlayer_play();
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    public delegate void Callback_AudioPlayer_pause();
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    public delegate void Callback_AudioPlayer_close();
 }
 
 namespace Soup
@@ -344,59 +379,31 @@ namespace Soup
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-    public interface FileDownloaderPrx : global::Ice.ObjectPrx
-    {
-        void startDownload(SongData songData, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
-
-        global::System.Threading.Tasks.Task startDownloadAsync(SongData songData, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
-
-        global::Ice.AsyncResult<Callback_FileDownloader_startDownload> begin_startDownload(SongData songData, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
-
-        global::Ice.AsyncResult begin_startDownload(SongData songData, global::Ice.AsyncCallback callback, object cookie);
-
-        global::Ice.AsyncResult begin_startDownload(SongData songData, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
-
-        void end_startDownload(global::Ice.AsyncResult asyncResult);
-
-        void sendPacket(byte[] data, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
-
-        global::System.Threading.Tasks.Task sendPacketAsync(byte[] data, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
-
-        global::Ice.AsyncResult<Callback_FileDownloader_sendPacket> begin_sendPacket(byte[] data, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
-
-        global::Ice.AsyncResult begin_sendPacket(byte[] data, int pos, global::Ice.AsyncCallback callback, object cookie);
-
-        global::Ice.AsyncResult begin_sendPacket(byte[] data, int pos, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
-
-        void end_sendPacket(global::Ice.AsyncResult asyncResult);
-
-        void endDownload(global::Ice.OptionalContext context = new global::Ice.OptionalContext());
-
-        global::System.Threading.Tasks.Task endDownloadAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
-
-        global::Ice.AsyncResult<Callback_FileDownloader_endDownload> begin_endDownload(global::Ice.OptionalContext context = new global::Ice.OptionalContext());
-
-        global::Ice.AsyncResult begin_endDownload(global::Ice.AsyncCallback callback, object cookie);
-
-        global::Ice.AsyncResult begin_endDownload(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
-
-        void end_endDownload(global::Ice.AsyncResult asyncResult);
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
     public interface FileSenderPrx : global::Ice.ObjectPrx
     {
-        void sendFile(FileDownloaderPrx proxy, string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+        SongData getSongData(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
-        global::System.Threading.Tasks.Task sendFileAsync(FileDownloaderPrx proxy, string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+        global::System.Threading.Tasks.Task<SongData> getSongDataAsync(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
 
-        global::Ice.AsyncResult<Callback_FileSender_sendFile> begin_sendFile(FileDownloaderPrx proxy, string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+        global::Ice.AsyncResult<Callback_FileSender_getSongData> begin_getSongData(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
-        global::Ice.AsyncResult begin_sendFile(FileDownloaderPrx proxy, string songId, global::Ice.AsyncCallback callback, object cookie);
+        global::Ice.AsyncResult begin_getSongData(string songId, global::Ice.AsyncCallback callback, object cookie);
 
-        global::Ice.AsyncResult begin_sendFile(FileDownloaderPrx proxy, string songId, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
+        global::Ice.AsyncResult begin_getSongData(string songId, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
 
-        void end_sendFile(global::Ice.AsyncResult asyncResult);
+        SongData end_getSongData(global::Ice.AsyncResult asyncResult);
+
+        byte[] getChunk(string songId, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::System.Threading.Tasks.Task<byte[]> getChunkAsync(string songId, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+
+        global::Ice.AsyncResult<Callback_FileSender_getChunk> begin_getChunk(string songId, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::Ice.AsyncResult begin_getChunk(string songId, int pos, global::Ice.AsyncCallback callback, object cookie);
+
+        global::Ice.AsyncResult begin_getChunk(string songId, int pos, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
+
+        byte[] end_getChunk(global::Ice.AsyncResult asyncResult);
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
@@ -450,6 +457,58 @@ namespace Soup
 
         void end_deleteSong(global::Ice.AsyncResult asyncResult);
     }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    public interface AudioPlayerPrx : global::Ice.ObjectPrx
+    {
+        string initializeAudioPlayer(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::System.Threading.Tasks.Task<string> initializeAudioPlayerAsync(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+
+        global::Ice.AsyncResult<Callback_AudioPlayer_initializeAudioPlayer> begin_initializeAudioPlayer(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::Ice.AsyncResult begin_initializeAudioPlayer(string songId, global::Ice.AsyncCallback callback, object cookie);
+
+        global::Ice.AsyncResult begin_initializeAudioPlayer(string songId, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
+
+        string end_initializeAudioPlayer(global::Ice.AsyncResult asyncResult);
+
+        void play(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::System.Threading.Tasks.Task playAsync(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+
+        global::Ice.AsyncResult<Callback_AudioPlayer_play> begin_play(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::Ice.AsyncResult begin_play(string rtspUrl, global::Ice.AsyncCallback callback, object cookie);
+
+        global::Ice.AsyncResult begin_play(string rtspUrl, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
+
+        void end_play(global::Ice.AsyncResult asyncResult);
+
+        void pause(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::System.Threading.Tasks.Task pauseAsync(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+
+        global::Ice.AsyncResult<Callback_AudioPlayer_pause> begin_pause(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::Ice.AsyncResult begin_pause(string rtspUrl, global::Ice.AsyncCallback callback, object cookie);
+
+        global::Ice.AsyncResult begin_pause(string rtspUrl, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
+
+        void end_pause(global::Ice.AsyncResult asyncResult);
+
+        void close(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::System.Threading.Tasks.Task closeAsync(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+
+        global::Ice.AsyncResult<Callback_AudioPlayer_close> begin_close(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::Ice.AsyncResult begin_close(string rtspUrl, global::Ice.AsyncCallback callback, object cookie);
+
+        global::Ice.AsyncResult begin_close(string rtspUrl, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
+
+        void end_close(global::Ice.AsyncResult asyncResult);
+    }
 }
 
 namespace Soup
@@ -468,23 +527,13 @@ namespace Soup
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-    public interface FileDownloaderOperations_
-    {
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-        void startDownload(SongData songData, global::Ice.Current current = null);
-
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-        void sendPacket(byte[] data, int pos, global::Ice.Current current = null);
-
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-        void endDownload(global::Ice.Current current = null);
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
     public interface FileSenderOperations_
     {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-        void sendFile(FileDownloaderPrx proxy, string songId, global::Ice.Current current = null);
+        SongData getSongData(string songId, global::Ice.Current current = null);
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+        byte[] getChunk(string songId, int pos, global::Ice.Current current = null);
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
@@ -501,6 +550,22 @@ namespace Soup
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
         void deleteSong(string songId, global::Ice.Current current = null);
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    public interface AudioPlayerOperations_
+    {
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+        string initializeAudioPlayer(string songId, global::Ice.Current current = null);
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+        void play(string rtspUrl, global::Ice.Current current = null);
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+        void pause(string rtspUrl, global::Ice.Current current = null);
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+        void close(string rtspUrl, global::Ice.Current current = null);
     }
 }
 
@@ -561,7 +626,7 @@ namespace Soup
         {
             SongData[] v;
             {
-                int szx = istr.readAndCheckSeqSize(6);
+                int szx = istr.readAndCheckSeqSize(7);
                 v = new SongData[szx];
                 for(int ix = 0; ix < szx; ++ix)
                 {
@@ -984,400 +1049,6 @@ namespace Soup
     [global::System.Runtime.InteropServices.ComVisible(false)]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
     [global::System.Serializable]
-    public sealed class FileDownloaderPrxHelper : global::Ice.ObjectPrxHelperBase, FileDownloaderPrx
-    {
-        public FileDownloaderPrxHelper()
-        {
-        }
-
-        public FileDownloaderPrxHelper(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : base(info, context)
-        {
-        }
-
-        #region Synchronous operations
-
-        public void startDownload(SongData songData, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
-        {
-            try
-            {
-                _iceI_startDownloadAsync(songData, context, null, global::System.Threading.CancellationToken.None, true).Wait();
-            }
-            catch(global::System.AggregateException ex_)
-            {
-                throw ex_.InnerException;
-            }
-        }
-
-        public void sendPacket(byte[] data, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
-        {
-            try
-            {
-                _iceI_sendPacketAsync(data, pos, context, null, global::System.Threading.CancellationToken.None, true).Wait();
-            }
-            catch(global::System.AggregateException ex_)
-            {
-                throw ex_.InnerException;
-            }
-        }
-
-        public void endDownload(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
-        {
-            try
-            {
-                _iceI_endDownloadAsync(context, null, global::System.Threading.CancellationToken.None, true).Wait();
-            }
-            catch(global::System.AggregateException ex_)
-            {
-                throw ex_.InnerException;
-            }
-        }
-
-        #endregion
-
-        #region Async Task operations
-
-        public global::System.Threading.Tasks.Task startDownloadAsync(SongData songData, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
-        {
-            return _iceI_startDownloadAsync(songData, context, progress, cancel, false);
-        }
-
-        private global::System.Threading.Tasks.Task _iceI_startDownloadAsync(SongData iceP_songData, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
-        {
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
-            _iceI_startDownload(iceP_songData, context, synchronous, completed);
-            return completed.Task;
-        }
-
-        private const string _startDownload_name = "startDownload";
-
-        private void _iceI_startDownload(SongData iceP_songData, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
-        {
-            var outAsync = getOutgoingAsync<object>(completed);
-            outAsync.invoke(
-                _startDownload_name,
-                global::Ice.OperationMode.Normal,
-                global::Ice.FormatType.DefaultFormat,
-                context,
-                synchronous,
-                write: (global::Ice.OutputStream ostr) =>
-                {
-                    SongData.ice_write(ostr, iceP_songData);
-                });
-        }
-
-        public global::System.Threading.Tasks.Task sendPacketAsync(byte[] data, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
-        {
-            return _iceI_sendPacketAsync(data, pos, context, progress, cancel, false);
-        }
-
-        private global::System.Threading.Tasks.Task _iceI_sendPacketAsync(byte[] iceP_data, int iceP_pos, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
-        {
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
-            _iceI_sendPacket(iceP_data, iceP_pos, context, synchronous, completed);
-            return completed.Task;
-        }
-
-        private const string _sendPacket_name = "sendPacket";
-
-        private void _iceI_sendPacket(byte[] iceP_data, int iceP_pos, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
-        {
-            var outAsync = getOutgoingAsync<object>(completed);
-            outAsync.invoke(
-                _sendPacket_name,
-                global::Ice.OperationMode.Normal,
-                global::Ice.FormatType.DefaultFormat,
-                context,
-                synchronous,
-                write: (global::Ice.OutputStream ostr) =>
-                {
-                    BytesHelper.write(ostr, iceP_data);
-                    ostr.writeInt(iceP_pos);
-                });
-        }
-
-        public global::System.Threading.Tasks.Task endDownloadAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
-        {
-            return _iceI_endDownloadAsync(context, progress, cancel, false);
-        }
-
-        private global::System.Threading.Tasks.Task _iceI_endDownloadAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
-        {
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
-            _iceI_endDownload(context, synchronous, completed);
-            return completed.Task;
-        }
-
-        private const string _endDownload_name = "endDownload";
-
-        private void _iceI_endDownload(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
-        {
-            var outAsync = getOutgoingAsync<object>(completed);
-            outAsync.invoke(
-                _endDownload_name,
-                global::Ice.OperationMode.Normal,
-                global::Ice.FormatType.DefaultFormat,
-                context,
-                synchronous);
-        }
-
-        #endregion
-
-        #region Asynchronous operations
-
-        public global::Ice.AsyncResult<Callback_FileDownloader_startDownload> begin_startDownload(SongData songData, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
-        {
-            return begin_startDownload(songData, context, null, null, false);
-        }
-
-        public global::Ice.AsyncResult begin_startDownload(SongData songData, global::Ice.AsyncCallback callback, object cookie)
-        {
-            return begin_startDownload(songData, new global::Ice.OptionalContext(), callback, cookie, false);
-        }
-
-        public global::Ice.AsyncResult begin_startDownload(SongData songData, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
-        {
-            return begin_startDownload(songData, context, callback, cookie, false);
-        }
-
-        public void end_startDownload(global::Ice.AsyncResult asyncResult)
-        {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _startDownload_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
-        }
-
-        private global::Ice.AsyncResult<Callback_FileDownloader_startDownload> begin_startDownload(SongData iceP_songData, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
-        {
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FileDownloader_startDownload, object>(
-                (Callback_FileDownloader_startDownload cb, object ret) =>
-                {
-                    if(cb != null)
-                    {
-                        cb.Invoke();
-                    }
-                },
-                this, _startDownload_name, cookie, completedCallback);
-            _iceI_startDownload(iceP_songData, context, synchronous, completed);
-            return completed;
-        }
-
-        public global::Ice.AsyncResult<Callback_FileDownloader_sendPacket> begin_sendPacket(byte[] data, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
-        {
-            return begin_sendPacket(data, pos, context, null, null, false);
-        }
-
-        public global::Ice.AsyncResult begin_sendPacket(byte[] data, int pos, global::Ice.AsyncCallback callback, object cookie)
-        {
-            return begin_sendPacket(data, pos, new global::Ice.OptionalContext(), callback, cookie, false);
-        }
-
-        public global::Ice.AsyncResult begin_sendPacket(byte[] data, int pos, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
-        {
-            return begin_sendPacket(data, pos, context, callback, cookie, false);
-        }
-
-        public void end_sendPacket(global::Ice.AsyncResult asyncResult)
-        {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _sendPacket_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
-        }
-
-        private global::Ice.AsyncResult<Callback_FileDownloader_sendPacket> begin_sendPacket(byte[] iceP_data, int iceP_pos, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
-        {
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FileDownloader_sendPacket, object>(
-                (Callback_FileDownloader_sendPacket cb, object ret) =>
-                {
-                    if(cb != null)
-                    {
-                        cb.Invoke();
-                    }
-                },
-                this, _sendPacket_name, cookie, completedCallback);
-            _iceI_sendPacket(iceP_data, iceP_pos, context, synchronous, completed);
-            return completed;
-        }
-
-        public global::Ice.AsyncResult<Callback_FileDownloader_endDownload> begin_endDownload(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
-        {
-            return begin_endDownload(context, null, null, false);
-        }
-
-        public global::Ice.AsyncResult begin_endDownload(global::Ice.AsyncCallback callback, object cookie)
-        {
-            return begin_endDownload(new global::Ice.OptionalContext(), callback, cookie, false);
-        }
-
-        public global::Ice.AsyncResult begin_endDownload(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
-        {
-            return begin_endDownload(context, callback, cookie, false);
-        }
-
-        public void end_endDownload(global::Ice.AsyncResult asyncResult)
-        {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _endDownload_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
-        }
-
-        private global::Ice.AsyncResult<Callback_FileDownloader_endDownload> begin_endDownload(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
-        {
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FileDownloader_endDownload, object>(
-                (Callback_FileDownloader_endDownload cb, object ret) =>
-                {
-                    if(cb != null)
-                    {
-                        cb.Invoke();
-                    }
-                },
-                this, _endDownload_name, cookie, completedCallback);
-            _iceI_endDownload(context, synchronous, completed);
-            return completed;
-        }
-
-        #endregion
-
-        #region Checked and unchecked cast operations
-
-        public static FileDownloaderPrx checkedCast(global::Ice.ObjectPrx b)
-        {
-            if(b == null)
-            {
-                return null;
-            }
-            FileDownloaderPrx r = b as FileDownloaderPrx;
-            if((r == null) && b.ice_isA(ice_staticId()))
-            {
-                FileDownloaderPrxHelper h = new FileDownloaderPrxHelper();
-                h.iceCopyFrom(b);
-                r = h;
-            }
-            return r;
-        }
-
-        public static FileDownloaderPrx checkedCast(global::Ice.ObjectPrx b, global::System.Collections.Generic.Dictionary<string, string> ctx)
-        {
-            if(b == null)
-            {
-                return null;
-            }
-            FileDownloaderPrx r = b as FileDownloaderPrx;
-            if((r == null) && b.ice_isA(ice_staticId(), ctx))
-            {
-                FileDownloaderPrxHelper h = new FileDownloaderPrxHelper();
-                h.iceCopyFrom(b);
-                r = h;
-            }
-            return r;
-        }
-
-        public static FileDownloaderPrx checkedCast(global::Ice.ObjectPrx b, string f)
-        {
-            if(b == null)
-            {
-                return null;
-            }
-            global::Ice.ObjectPrx bb = b.ice_facet(f);
-            try
-            {
-                if(bb.ice_isA(ice_staticId()))
-                {
-                    FileDownloaderPrxHelper h = new FileDownloaderPrxHelper();
-                    h.iceCopyFrom(bb);
-                    return h;
-                }
-            }
-            catch(global::Ice.FacetNotExistException)
-            {
-            }
-            return null;
-        }
-
-        public static FileDownloaderPrx checkedCast(global::Ice.ObjectPrx b, string f, global::System.Collections.Generic.Dictionary<string, string> ctx)
-        {
-            if(b == null)
-            {
-                return null;
-            }
-            global::Ice.ObjectPrx bb = b.ice_facet(f);
-            try
-            {
-                if(bb.ice_isA(ice_staticId(), ctx))
-                {
-                    FileDownloaderPrxHelper h = new FileDownloaderPrxHelper();
-                    h.iceCopyFrom(bb);
-                    return h;
-                }
-            }
-            catch(global::Ice.FacetNotExistException)
-            {
-            }
-            return null;
-        }
-
-        public static FileDownloaderPrx uncheckedCast(global::Ice.ObjectPrx b)
-        {
-            if(b == null)
-            {
-                return null;
-            }
-            FileDownloaderPrx r = b as FileDownloaderPrx;
-            if(r == null)
-            {
-                FileDownloaderPrxHelper h = new FileDownloaderPrxHelper();
-                h.iceCopyFrom(b);
-                r = h;
-            }
-            return r;
-        }
-
-        public static FileDownloaderPrx uncheckedCast(global::Ice.ObjectPrx b, string f)
-        {
-            if(b == null)
-            {
-                return null;
-            }
-            global::Ice.ObjectPrx bb = b.ice_facet(f);
-            FileDownloaderPrxHelper h = new FileDownloaderPrxHelper();
-            h.iceCopyFrom(bb);
-            return h;
-        }
-
-        private static readonly string[] _ids =
-        {
-            "::Ice::Object",
-            "::Soup::FileDownloader"
-        };
-
-        public static string ice_staticId()
-        {
-            return _ids[1];
-        }
-
-        #endregion
-
-        #region Marshaling support
-
-        public static void write(global::Ice.OutputStream ostr, FileDownloaderPrx v)
-        {
-            ostr.writeProxy(v);
-        }
-
-        public static FileDownloaderPrx read(global::Ice.InputStream istr)
-        {
-            global::Ice.ObjectPrx proxy = istr.readProxy();
-            if(proxy != null)
-            {
-                FileDownloaderPrxHelper result = new FileDownloaderPrxHelper();
-                result.iceCopyFrom(proxy);
-                return result;
-            }
-            return null;
-        }
-
-        #endregion
-    }
-
-    [global::System.Runtime.InteropServices.ComVisible(false)]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-    [global::System.Serializable]
     public sealed class FileSenderPrxHelper : global::Ice.ObjectPrxHelperBase, FileSenderPrx
     {
         public FileSenderPrxHelper()
@@ -1390,11 +1061,23 @@ namespace Soup
 
         #region Synchronous operations
 
-        public void sendFile(FileDownloaderPrx proxy, string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public SongData getSongData(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_sendFileAsync(proxy, songId, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_getSongDataAsync(songId, context, null, global::System.Threading.CancellationToken.None, true).Result;
+            }
+            catch(global::System.AggregateException ex_)
+            {
+                throw ex_.InnerException;
+            }
+        }
+
+        public byte[] getChunk(string songId, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            try
+            {
+                return _iceI_getChunkAsync(songId, pos, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -1406,33 +1089,76 @@ namespace Soup
 
         #region Async Task operations
 
-        public global::System.Threading.Tasks.Task sendFileAsync(FileDownloaderPrx proxy, string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<SongData> getSongDataAsync(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
-            return _iceI_sendFileAsync(proxy, songId, context, progress, cancel, false);
+            return _iceI_getSongDataAsync(songId, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_sendFileAsync(FileDownloaderPrx iceP_proxy, string iceP_songId, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<SongData> _iceI_getSongDataAsync(string iceP_songId, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
-            _iceI_sendFile(iceP_proxy, iceP_songId, context, synchronous, completed);
+            iceCheckTwowayOnly(_getSongData_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<SongData>(progress, cancel);
+            _iceI_getSongData(iceP_songId, context, synchronous, completed);
             return completed.Task;
         }
 
-        private const string _sendFile_name = "sendFile";
+        private const string _getSongData_name = "getSongData";
 
-        private void _iceI_sendFile(FileDownloaderPrx iceP_proxy, string iceP_songId, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        private void _iceI_getSongData(string iceP_songId, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<SongData>(completed);
             outAsync.invoke(
-                _sendFile_name,
+                _getSongData_name,
                 global::Ice.OperationMode.Normal,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
                 write: (global::Ice.OutputStream ostr) =>
                 {
-                    FileDownloaderPrxHelper.write(ostr, iceP_proxy);
                     ostr.writeString(iceP_songId);
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    SongData ret = null;
+                    ret = SongData.ice_read(istr);
+                    return ret;
+                });
+        }
+
+        public global::System.Threading.Tasks.Task<byte[]> getChunkAsync(string songId, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        {
+            return _iceI_getChunkAsync(songId, pos, context, progress, cancel, false);
+        }
+
+        private global::System.Threading.Tasks.Task<byte[]> _iceI_getChunkAsync(string iceP_songId, int iceP_pos, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        {
+            iceCheckTwowayOnly(_getChunk_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<byte[]>(progress, cancel);
+            _iceI_getChunk(iceP_songId, iceP_pos, context, synchronous, completed);
+            return completed.Task;
+        }
+
+        private const string _getChunk_name = "getChunk";
+
+        private void _iceI_getChunk(string iceP_songId, int iceP_pos, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        {
+            var outAsync = getOutgoingAsync<byte[]>(completed);
+            outAsync.invoke(
+                _getChunk_name,
+                global::Ice.OperationMode.Normal,
+                global::Ice.FormatType.DefaultFormat,
+                context,
+                synchronous,
+                write: (global::Ice.OutputStream ostr) =>
+                {
+                    ostr.writeString(iceP_songId);
+                    ostr.writeInt(iceP_pos);
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    byte[] ret;
+                    ret = BytesHelper.read(istr);
+                    return ret;
                 });
         }
 
@@ -1440,39 +1166,79 @@ namespace Soup
 
         #region Asynchronous operations
 
-        public global::Ice.AsyncResult<Callback_FileSender_sendFile> begin_sendFile(FileDownloaderPrx proxy, string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public global::Ice.AsyncResult<Callback_FileSender_getSongData> begin_getSongData(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
-            return begin_sendFile(proxy, songId, context, null, null, false);
+            return begin_getSongData(songId, context, null, null, false);
         }
 
-        public global::Ice.AsyncResult begin_sendFile(FileDownloaderPrx proxy, string songId, global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_getSongData(string songId, global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_sendFile(proxy, songId, new global::Ice.OptionalContext(), callback, cookie, false);
+            return begin_getSongData(songId, new global::Ice.OptionalContext(), callback, cookie, false);
         }
 
-        public global::Ice.AsyncResult begin_sendFile(FileDownloaderPrx proxy, string songId, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_getSongData(string songId, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_sendFile(proxy, songId, context, callback, cookie, false);
+            return begin_getSongData(songId, context, callback, cookie, false);
         }
 
-        public void end_sendFile(global::Ice.AsyncResult asyncResult)
+        public SongData end_getSongData(global::Ice.AsyncResult asyncResult)
         {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _sendFile_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _getSongData_name);
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<SongData>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
-        private global::Ice.AsyncResult<Callback_FileSender_sendFile> begin_sendFile(FileDownloaderPrx iceP_proxy, string iceP_songId, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        private global::Ice.AsyncResult<Callback_FileSender_getSongData> begin_getSongData(string iceP_songId, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FileSender_sendFile, object>(
-                (Callback_FileSender_sendFile cb, object ret) =>
+            iceCheckAsyncTwowayOnly(_getSongData_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FileSender_getSongData, SongData>(
+                (Callback_FileSender_getSongData cb, SongData ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
-                this, _sendFile_name, cookie, completedCallback);
-            _iceI_sendFile(iceP_proxy, iceP_songId, context, synchronous, completed);
+                this, _getSongData_name, cookie, completedCallback);
+            _iceI_getSongData(iceP_songId, context, synchronous, completed);
+            return completed;
+        }
+
+        public global::Ice.AsyncResult<Callback_FileSender_getChunk> begin_getChunk(string songId, int pos, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            return begin_getChunk(songId, pos, context, null, null, false);
+        }
+
+        public global::Ice.AsyncResult begin_getChunk(string songId, int pos, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_getChunk(songId, pos, new global::Ice.OptionalContext(), callback, cookie, false);
+        }
+
+        public global::Ice.AsyncResult begin_getChunk(string songId, int pos, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_getChunk(songId, pos, context, callback, cookie, false);
+        }
+
+        public byte[] end_getChunk(global::Ice.AsyncResult asyncResult)
+        {
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _getChunk_name);
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<byte[]>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
+        }
+
+        private global::Ice.AsyncResult<Callback_FileSender_getChunk> begin_getChunk(string iceP_songId, int iceP_pos, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        {
+            iceCheckAsyncTwowayOnly(_getChunk_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FileSender_getChunk, byte[]>(
+                (Callback_FileSender_getChunk cb, byte[] ret) =>
+                {
+                    if(cb != null)
+                    {
+                        cb.Invoke(ret);
+                    }
+                },
+                this, _getChunk_name, cookie, completedCallback);
+            _iceI_getChunk(iceP_songId, iceP_pos, context, synchronous, completed);
             return completed;
         }
 
@@ -2110,6 +1876,489 @@ namespace Soup
 
         #endregion
     }
+
+    [global::System.Runtime.InteropServices.ComVisible(false)]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    [global::System.Serializable]
+    public sealed class AudioPlayerPrxHelper : global::Ice.ObjectPrxHelperBase, AudioPlayerPrx
+    {
+        public AudioPlayerPrxHelper()
+        {
+        }
+
+        public AudioPlayerPrxHelper(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : base(info, context)
+        {
+        }
+
+        #region Synchronous operations
+
+        public string initializeAudioPlayer(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            try
+            {
+                return _iceI_initializeAudioPlayerAsync(songId, context, null, global::System.Threading.CancellationToken.None, true).Result;
+            }
+            catch(global::System.AggregateException ex_)
+            {
+                throw ex_.InnerException;
+            }
+        }
+
+        public void play(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            try
+            {
+                _iceI_playAsync(rtspUrl, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+            }
+            catch(global::System.AggregateException ex_)
+            {
+                throw ex_.InnerException;
+            }
+        }
+
+        public void pause(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            try
+            {
+                _iceI_pauseAsync(rtspUrl, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+            }
+            catch(global::System.AggregateException ex_)
+            {
+                throw ex_.InnerException;
+            }
+        }
+
+        public void close(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            try
+            {
+                _iceI_closeAsync(rtspUrl, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+            }
+            catch(global::System.AggregateException ex_)
+            {
+                throw ex_.InnerException;
+            }
+        }
+
+        #endregion
+
+        #region Async Task operations
+
+        public global::System.Threading.Tasks.Task<string> initializeAudioPlayerAsync(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        {
+            return _iceI_initializeAudioPlayerAsync(songId, context, progress, cancel, false);
+        }
+
+        private global::System.Threading.Tasks.Task<string> _iceI_initializeAudioPlayerAsync(string iceP_songId, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        {
+            iceCheckTwowayOnly(_initializeAudioPlayer_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<string>(progress, cancel);
+            _iceI_initializeAudioPlayer(iceP_songId, context, synchronous, completed);
+            return completed.Task;
+        }
+
+        private const string _initializeAudioPlayer_name = "initializeAudioPlayer";
+
+        private void _iceI_initializeAudioPlayer(string iceP_songId, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        {
+            var outAsync = getOutgoingAsync<string>(completed);
+            outAsync.invoke(
+                _initializeAudioPlayer_name,
+                global::Ice.OperationMode.Normal,
+                global::Ice.FormatType.DefaultFormat,
+                context,
+                synchronous,
+                write: (global::Ice.OutputStream ostr) =>
+                {
+                    ostr.writeString(iceP_songId);
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    string ret;
+                    ret = istr.readString();
+                    return ret;
+                });
+        }
+
+        public global::System.Threading.Tasks.Task playAsync(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        {
+            return _iceI_playAsync(rtspUrl, context, progress, cancel, false);
+        }
+
+        private global::System.Threading.Tasks.Task _iceI_playAsync(string iceP_rtspUrl, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        {
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            _iceI_play(iceP_rtspUrl, context, synchronous, completed);
+            return completed.Task;
+        }
+
+        private const string _play_name = "play";
+
+        private void _iceI_play(string iceP_rtspUrl, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        {
+            var outAsync = getOutgoingAsync<object>(completed);
+            outAsync.invoke(
+                _play_name,
+                global::Ice.OperationMode.Normal,
+                global::Ice.FormatType.DefaultFormat,
+                context,
+                synchronous,
+                write: (global::Ice.OutputStream ostr) =>
+                {
+                    ostr.writeString(iceP_rtspUrl);
+                });
+        }
+
+        public global::System.Threading.Tasks.Task pauseAsync(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        {
+            return _iceI_pauseAsync(rtspUrl, context, progress, cancel, false);
+        }
+
+        private global::System.Threading.Tasks.Task _iceI_pauseAsync(string iceP_rtspUrl, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        {
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            _iceI_pause(iceP_rtspUrl, context, synchronous, completed);
+            return completed.Task;
+        }
+
+        private const string _pause_name = "pause";
+
+        private void _iceI_pause(string iceP_rtspUrl, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        {
+            var outAsync = getOutgoingAsync<object>(completed);
+            outAsync.invoke(
+                _pause_name,
+                global::Ice.OperationMode.Normal,
+                global::Ice.FormatType.DefaultFormat,
+                context,
+                synchronous,
+                write: (global::Ice.OutputStream ostr) =>
+                {
+                    ostr.writeString(iceP_rtspUrl);
+                });
+        }
+
+        public global::System.Threading.Tasks.Task closeAsync(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        {
+            return _iceI_closeAsync(rtspUrl, context, progress, cancel, false);
+        }
+
+        private global::System.Threading.Tasks.Task _iceI_closeAsync(string iceP_rtspUrl, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        {
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            _iceI_close(iceP_rtspUrl, context, synchronous, completed);
+            return completed.Task;
+        }
+
+        private const string _close_name = "close";
+
+        private void _iceI_close(string iceP_rtspUrl, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        {
+            var outAsync = getOutgoingAsync<object>(completed);
+            outAsync.invoke(
+                _close_name,
+                global::Ice.OperationMode.Normal,
+                global::Ice.FormatType.DefaultFormat,
+                context,
+                synchronous,
+                write: (global::Ice.OutputStream ostr) =>
+                {
+                    ostr.writeString(iceP_rtspUrl);
+                });
+        }
+
+        #endregion
+
+        #region Asynchronous operations
+
+        public global::Ice.AsyncResult<Callback_AudioPlayer_initializeAudioPlayer> begin_initializeAudioPlayer(string songId, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            return begin_initializeAudioPlayer(songId, context, null, null, false);
+        }
+
+        public global::Ice.AsyncResult begin_initializeAudioPlayer(string songId, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_initializeAudioPlayer(songId, new global::Ice.OptionalContext(), callback, cookie, false);
+        }
+
+        public global::Ice.AsyncResult begin_initializeAudioPlayer(string songId, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_initializeAudioPlayer(songId, context, callback, cookie, false);
+        }
+
+        public string end_initializeAudioPlayer(global::Ice.AsyncResult asyncResult)
+        {
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _initializeAudioPlayer_name);
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<string>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
+        }
+
+        private global::Ice.AsyncResult<Callback_AudioPlayer_initializeAudioPlayer> begin_initializeAudioPlayer(string iceP_songId, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        {
+            iceCheckAsyncTwowayOnly(_initializeAudioPlayer_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_AudioPlayer_initializeAudioPlayer, string>(
+                (Callback_AudioPlayer_initializeAudioPlayer cb, string ret) =>
+                {
+                    if(cb != null)
+                    {
+                        cb.Invoke(ret);
+                    }
+                },
+                this, _initializeAudioPlayer_name, cookie, completedCallback);
+            _iceI_initializeAudioPlayer(iceP_songId, context, synchronous, completed);
+            return completed;
+        }
+
+        public global::Ice.AsyncResult<Callback_AudioPlayer_play> begin_play(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            return begin_play(rtspUrl, context, null, null, false);
+        }
+
+        public global::Ice.AsyncResult begin_play(string rtspUrl, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_play(rtspUrl, new global::Ice.OptionalContext(), callback, cookie, false);
+        }
+
+        public global::Ice.AsyncResult begin_play(string rtspUrl, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_play(rtspUrl, context, callback, cookie, false);
+        }
+
+        public void end_play(global::Ice.AsyncResult asyncResult)
+        {
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _play_name);
+            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+        }
+
+        private global::Ice.AsyncResult<Callback_AudioPlayer_play> begin_play(string iceP_rtspUrl, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        {
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_AudioPlayer_play, object>(
+                (Callback_AudioPlayer_play cb, object ret) =>
+                {
+                    if(cb != null)
+                    {
+                        cb.Invoke();
+                    }
+                },
+                this, _play_name, cookie, completedCallback);
+            _iceI_play(iceP_rtspUrl, context, synchronous, completed);
+            return completed;
+        }
+
+        public global::Ice.AsyncResult<Callback_AudioPlayer_pause> begin_pause(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            return begin_pause(rtspUrl, context, null, null, false);
+        }
+
+        public global::Ice.AsyncResult begin_pause(string rtspUrl, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_pause(rtspUrl, new global::Ice.OptionalContext(), callback, cookie, false);
+        }
+
+        public global::Ice.AsyncResult begin_pause(string rtspUrl, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_pause(rtspUrl, context, callback, cookie, false);
+        }
+
+        public void end_pause(global::Ice.AsyncResult asyncResult)
+        {
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _pause_name);
+            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+        }
+
+        private global::Ice.AsyncResult<Callback_AudioPlayer_pause> begin_pause(string iceP_rtspUrl, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        {
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_AudioPlayer_pause, object>(
+                (Callback_AudioPlayer_pause cb, object ret) =>
+                {
+                    if(cb != null)
+                    {
+                        cb.Invoke();
+                    }
+                },
+                this, _pause_name, cookie, completedCallback);
+            _iceI_pause(iceP_rtspUrl, context, synchronous, completed);
+            return completed;
+        }
+
+        public global::Ice.AsyncResult<Callback_AudioPlayer_close> begin_close(string rtspUrl, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            return begin_close(rtspUrl, context, null, null, false);
+        }
+
+        public global::Ice.AsyncResult begin_close(string rtspUrl, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_close(rtspUrl, new global::Ice.OptionalContext(), callback, cookie, false);
+        }
+
+        public global::Ice.AsyncResult begin_close(string rtspUrl, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_close(rtspUrl, context, callback, cookie, false);
+        }
+
+        public void end_close(global::Ice.AsyncResult asyncResult)
+        {
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _close_name);
+            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+        }
+
+        private global::Ice.AsyncResult<Callback_AudioPlayer_close> begin_close(string iceP_rtspUrl, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        {
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_AudioPlayer_close, object>(
+                (Callback_AudioPlayer_close cb, object ret) =>
+                {
+                    if(cb != null)
+                    {
+                        cb.Invoke();
+                    }
+                },
+                this, _close_name, cookie, completedCallback);
+            _iceI_close(iceP_rtspUrl, context, synchronous, completed);
+            return completed;
+        }
+
+        #endregion
+
+        #region Checked and unchecked cast operations
+
+        public static AudioPlayerPrx checkedCast(global::Ice.ObjectPrx b)
+        {
+            if(b == null)
+            {
+                return null;
+            }
+            AudioPlayerPrx r = b as AudioPlayerPrx;
+            if((r == null) && b.ice_isA(ice_staticId()))
+            {
+                AudioPlayerPrxHelper h = new AudioPlayerPrxHelper();
+                h.iceCopyFrom(b);
+                r = h;
+            }
+            return r;
+        }
+
+        public static AudioPlayerPrx checkedCast(global::Ice.ObjectPrx b, global::System.Collections.Generic.Dictionary<string, string> ctx)
+        {
+            if(b == null)
+            {
+                return null;
+            }
+            AudioPlayerPrx r = b as AudioPlayerPrx;
+            if((r == null) && b.ice_isA(ice_staticId(), ctx))
+            {
+                AudioPlayerPrxHelper h = new AudioPlayerPrxHelper();
+                h.iceCopyFrom(b);
+                r = h;
+            }
+            return r;
+        }
+
+        public static AudioPlayerPrx checkedCast(global::Ice.ObjectPrx b, string f)
+        {
+            if(b == null)
+            {
+                return null;
+            }
+            global::Ice.ObjectPrx bb = b.ice_facet(f);
+            try
+            {
+                if(bb.ice_isA(ice_staticId()))
+                {
+                    AudioPlayerPrxHelper h = new AudioPlayerPrxHelper();
+                    h.iceCopyFrom(bb);
+                    return h;
+                }
+            }
+            catch(global::Ice.FacetNotExistException)
+            {
+            }
+            return null;
+        }
+
+        public static AudioPlayerPrx checkedCast(global::Ice.ObjectPrx b, string f, global::System.Collections.Generic.Dictionary<string, string> ctx)
+        {
+            if(b == null)
+            {
+                return null;
+            }
+            global::Ice.ObjectPrx bb = b.ice_facet(f);
+            try
+            {
+                if(bb.ice_isA(ice_staticId(), ctx))
+                {
+                    AudioPlayerPrxHelper h = new AudioPlayerPrxHelper();
+                    h.iceCopyFrom(bb);
+                    return h;
+                }
+            }
+            catch(global::Ice.FacetNotExistException)
+            {
+            }
+            return null;
+        }
+
+        public static AudioPlayerPrx uncheckedCast(global::Ice.ObjectPrx b)
+        {
+            if(b == null)
+            {
+                return null;
+            }
+            AudioPlayerPrx r = b as AudioPlayerPrx;
+            if(r == null)
+            {
+                AudioPlayerPrxHelper h = new AudioPlayerPrxHelper();
+                h.iceCopyFrom(b);
+                r = h;
+            }
+            return r;
+        }
+
+        public static AudioPlayerPrx uncheckedCast(global::Ice.ObjectPrx b, string f)
+        {
+            if(b == null)
+            {
+                return null;
+            }
+            global::Ice.ObjectPrx bb = b.ice_facet(f);
+            AudioPlayerPrxHelper h = new AudioPlayerPrxHelper();
+            h.iceCopyFrom(bb);
+            return h;
+        }
+
+        private static readonly string[] _ids =
+        {
+            "::Ice::Object",
+            "::Soup::AudioPlayer"
+        };
+
+        public static string ice_staticId()
+        {
+            return _ids[1];
+        }
+
+        #endregion
+
+        #region Marshaling support
+
+        public static void write(global::Ice.OutputStream ostr, AudioPlayerPrx v)
+        {
+            ostr.writeProxy(v);
+        }
+
+        public static AudioPlayerPrx read(global::Ice.InputStream istr)
+        {
+            global::Ice.ObjectPrx proxy = istr.readProxy();
+            if(proxy != null)
+            {
+                AudioPlayerPrxHelper result = new AudioPlayerPrxHelper();
+                result.iceCopyFrom(proxy);
+                return result;
+            }
+            return null;
+        }
+
+        #endregion
+    }
 }
 
 namespace Soup
@@ -2268,155 +2517,13 @@ namespace Soup
 
     [global::System.Runtime.InteropServices.ComVisible(false)]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
-    public abstract class FileDownloaderDisp_ : global::Ice.ObjectImpl, FileDownloader
-    {
-        #region Slice operations
-
-        public abstract void startDownload(SongData songData, global::Ice.Current current = null);
-
-        public abstract void sendPacket(byte[] data, int pos, global::Ice.Current current = null);
-
-        public abstract void endDownload(global::Ice.Current current = null);
-
-        #endregion
-
-        #region Slice type-related members
-
-        private static readonly string[] _ids =
-        {
-            "::Ice::Object",
-            "::Soup::FileDownloader"
-        };
-
-        public override bool ice_isA(string s, global::Ice.Current current = null)
-        {
-            return global::System.Array.BinarySearch(_ids, s, IceUtilInternal.StringUtil.OrdinalStringComparer) >= 0;
-        }
-
-        public override string[] ice_ids(global::Ice.Current current = null)
-        {
-            return _ids;
-        }
-
-        public override string ice_id(global::Ice.Current current = null)
-        {
-            return _ids[1];
-        }
-
-        public static new string ice_staticId()
-        {
-            return _ids[1];
-        }
-
-        #endregion
-
-        #region Operation dispatch
-
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
-        iceD_startDownload(FileDownloader obj, global::IceInternal.Incoming inS, global::Ice.Current current)
-        {
-            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
-            var istr = inS.startReadParams();
-            SongData iceP_songData;
-            iceP_songData = null;
-            iceP_songData = SongData.ice_read(istr);
-            inS.endReadParams();
-            obj.startDownload(iceP_songData, current);
-            return inS.setResult(inS.writeEmptyParams());
-        }
-
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
-        iceD_sendPacket(FileDownloader obj, global::IceInternal.Incoming inS, global::Ice.Current current)
-        {
-            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
-            var istr = inS.startReadParams();
-            byte[] iceP_data;
-            int iceP_pos;
-            iceP_data = BytesHelper.read(istr);
-            iceP_pos = istr.readInt();
-            inS.endReadParams();
-            obj.sendPacket(iceP_data, iceP_pos, current);
-            return inS.setResult(inS.writeEmptyParams());
-        }
-
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
-        iceD_endDownload(FileDownloader obj, global::IceInternal.Incoming inS, global::Ice.Current current)
-        {
-            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
-            inS.readEmptyParams();
-            obj.endDownload(current);
-            return inS.setResult(inS.writeEmptyParams());
-        }
-
-        private static readonly string[] _all =
-        {
-            "endDownload",
-            "ice_id",
-            "ice_ids",
-            "ice_isA",
-            "ice_ping",
-            "sendPacket",
-            "startDownload"
-        };
-
-        public override global::System.Threading.Tasks.Task<global::Ice.OutputStream>
-        iceDispatch(global::IceInternal.Incoming inS, global::Ice.Current current)
-        {
-            int pos = global::System.Array.BinarySearch(_all, current.operation, global::IceUtilInternal.StringUtil.OrdinalStringComparer);
-            if(pos < 0)
-            {
-                throw new global::Ice.OperationNotExistException(current.id, current.facet, current.operation);
-            }
-
-            switch(pos)
-            {
-                case 0:
-                {
-                    return iceD_endDownload(this, inS, current);
-                }
-                case 1:
-                {
-                    return global::Ice.ObjectImpl.iceD_ice_id(this, inS, current);
-                }
-                case 2:
-                {
-                    return global::Ice.ObjectImpl.iceD_ice_ids(this, inS, current);
-                }
-                case 3:
-                {
-                    return global::Ice.ObjectImpl.iceD_ice_isA(this, inS, current);
-                }
-                case 4:
-                {
-                    return global::Ice.ObjectImpl.iceD_ice_ping(this, inS, current);
-                }
-                case 5:
-                {
-                    return iceD_sendPacket(this, inS, current);
-                }
-                case 6:
-                {
-                    return iceD_startDownload(this, inS, current);
-                }
-            }
-
-            global::System.Diagnostics.Debug.Assert(false);
-            throw new global::Ice.OperationNotExistException(current.id, current.facet, current.operation);
-        }
-
-        #endregion
-    }
-
-    [global::System.Runtime.InteropServices.ComVisible(false)]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
     public abstract class FileSenderDisp_ : global::Ice.ObjectImpl, FileSender
     {
         #region Slice operations
 
-        public abstract void sendFile(FileDownloaderPrx proxy, string songId, global::Ice.Current current = null);
+        public abstract SongData getSongData(string songId, global::Ice.Current current = null);
+
+        public abstract byte[] getChunk(string songId, int pos, global::Ice.Current current = null);
 
         #endregion
 
@@ -2454,26 +2561,46 @@ namespace Soup
 
         [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
         public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
-        iceD_sendFile(FileSender obj, global::IceInternal.Incoming inS, global::Ice.Current current)
+        iceD_getSongData(FileSender obj, global::IceInternal.Incoming inS, global::Ice.Current current)
         {
             global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
             var istr = inS.startReadParams();
-            FileDownloaderPrx iceP_proxy;
             string iceP_songId;
-            iceP_proxy = FileDownloaderPrxHelper.read(istr);
             iceP_songId = istr.readString();
             inS.endReadParams();
-            obj.sendFile(iceP_proxy, iceP_songId, current);
-            return inS.setResult(inS.writeEmptyParams());
+            var ret = obj.getSongData(iceP_songId, current);
+            var ostr = inS.startWriteParams();
+            SongData.ice_write(ostr, ret);
+            inS.endWriteParams(ostr);
+            return inS.setResult(ostr);
+        }
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
+        iceD_getChunk(FileSender obj, global::IceInternal.Incoming inS, global::Ice.Current current)
+        {
+            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
+            var istr = inS.startReadParams();
+            string iceP_songId;
+            int iceP_pos;
+            iceP_songId = istr.readString();
+            iceP_pos = istr.readInt();
+            inS.endReadParams();
+            var ret = obj.getChunk(iceP_songId, iceP_pos, current);
+            var ostr = inS.startWriteParams();
+            BytesHelper.write(ostr, ret);
+            inS.endWriteParams(ostr);
+            return inS.setResult(ostr);
         }
 
         private static readonly string[] _all =
         {
+            "getChunk",
+            "getSongData",
             "ice_id",
             "ice_ids",
             "ice_isA",
-            "ice_ping",
-            "sendFile"
+            "ice_ping"
         };
 
         public override global::System.Threading.Tasks.Task<global::Ice.OutputStream>
@@ -2489,23 +2616,27 @@ namespace Soup
             {
                 case 0:
                 {
-                    return global::Ice.ObjectImpl.iceD_ice_id(this, inS, current);
+                    return iceD_getChunk(this, inS, current);
                 }
                 case 1:
                 {
-                    return global::Ice.ObjectImpl.iceD_ice_ids(this, inS, current);
+                    return iceD_getSongData(this, inS, current);
                 }
                 case 2:
                 {
-                    return global::Ice.ObjectImpl.iceD_ice_isA(this, inS, current);
+                    return global::Ice.ObjectImpl.iceD_ice_id(this, inS, current);
                 }
                 case 3:
                 {
-                    return global::Ice.ObjectImpl.iceD_ice_ping(this, inS, current);
+                    return global::Ice.ObjectImpl.iceD_ice_ids(this, inS, current);
                 }
                 case 4:
                 {
-                    return iceD_sendFile(this, inS, current);
+                    return global::Ice.ObjectImpl.iceD_ice_isA(this, inS, current);
+                }
+                case 5:
+                {
+                    return global::Ice.ObjectImpl.iceD_ice_ping(this, inS, current);
                 }
             }
 
@@ -2677,6 +2808,173 @@ namespace Soup
                 case 7:
                 {
                     return iceD_updateSong(this, inS, current);
+                }
+            }
+
+            global::System.Diagnostics.Debug.Assert(false);
+            throw new global::Ice.OperationNotExistException(current.id, current.facet, current.operation);
+        }
+
+        #endregion
+    }
+
+    [global::System.Runtime.InteropServices.ComVisible(false)]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.10")]
+    public abstract class AudioPlayerDisp_ : global::Ice.ObjectImpl, AudioPlayer
+    {
+        #region Slice operations
+
+        public abstract string initializeAudioPlayer(string songId, global::Ice.Current current = null);
+
+        public abstract void play(string rtspUrl, global::Ice.Current current = null);
+
+        public abstract void pause(string rtspUrl, global::Ice.Current current = null);
+
+        public abstract void close(string rtspUrl, global::Ice.Current current = null);
+
+        #endregion
+
+        #region Slice type-related members
+
+        private static readonly string[] _ids =
+        {
+            "::Ice::Object",
+            "::Soup::AudioPlayer"
+        };
+
+        public override bool ice_isA(string s, global::Ice.Current current = null)
+        {
+            return global::System.Array.BinarySearch(_ids, s, IceUtilInternal.StringUtil.OrdinalStringComparer) >= 0;
+        }
+
+        public override string[] ice_ids(global::Ice.Current current = null)
+        {
+            return _ids;
+        }
+
+        public override string ice_id(global::Ice.Current current = null)
+        {
+            return _ids[1];
+        }
+
+        public static new string ice_staticId()
+        {
+            return _ids[1];
+        }
+
+        #endregion
+
+        #region Operation dispatch
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
+        iceD_initializeAudioPlayer(AudioPlayer obj, global::IceInternal.Incoming inS, global::Ice.Current current)
+        {
+            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
+            var istr = inS.startReadParams();
+            string iceP_songId;
+            iceP_songId = istr.readString();
+            inS.endReadParams();
+            var ret = obj.initializeAudioPlayer(iceP_songId, current);
+            var ostr = inS.startWriteParams();
+            ostr.writeString(ret);
+            inS.endWriteParams(ostr);
+            return inS.setResult(ostr);
+        }
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
+        iceD_play(AudioPlayer obj, global::IceInternal.Incoming inS, global::Ice.Current current)
+        {
+            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
+            var istr = inS.startReadParams();
+            string iceP_rtspUrl;
+            iceP_rtspUrl = istr.readString();
+            inS.endReadParams();
+            obj.play(iceP_rtspUrl, current);
+            return inS.setResult(inS.writeEmptyParams());
+        }
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
+        iceD_pause(AudioPlayer obj, global::IceInternal.Incoming inS, global::Ice.Current current)
+        {
+            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
+            var istr = inS.startReadParams();
+            string iceP_rtspUrl;
+            iceP_rtspUrl = istr.readString();
+            inS.endReadParams();
+            obj.pause(iceP_rtspUrl, current);
+            return inS.setResult(inS.writeEmptyParams());
+        }
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
+        iceD_close(AudioPlayer obj, global::IceInternal.Incoming inS, global::Ice.Current current)
+        {
+            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
+            var istr = inS.startReadParams();
+            string iceP_rtspUrl;
+            iceP_rtspUrl = istr.readString();
+            inS.endReadParams();
+            obj.close(iceP_rtspUrl, current);
+            return inS.setResult(inS.writeEmptyParams());
+        }
+
+        private static readonly string[] _all =
+        {
+            "close",
+            "ice_id",
+            "ice_ids",
+            "ice_isA",
+            "ice_ping",
+            "initializeAudioPlayer",
+            "pause",
+            "play"
+        };
+
+        public override global::System.Threading.Tasks.Task<global::Ice.OutputStream>
+        iceDispatch(global::IceInternal.Incoming inS, global::Ice.Current current)
+        {
+            int pos = global::System.Array.BinarySearch(_all, current.operation, global::IceUtilInternal.StringUtil.OrdinalStringComparer);
+            if(pos < 0)
+            {
+                throw new global::Ice.OperationNotExistException(current.id, current.facet, current.operation);
+            }
+
+            switch(pos)
+            {
+                case 0:
+                {
+                    return iceD_close(this, inS, current);
+                }
+                case 1:
+                {
+                    return global::Ice.ObjectImpl.iceD_ice_id(this, inS, current);
+                }
+                case 2:
+                {
+                    return global::Ice.ObjectImpl.iceD_ice_ids(this, inS, current);
+                }
+                case 3:
+                {
+                    return global::Ice.ObjectImpl.iceD_ice_isA(this, inS, current);
+                }
+                case 4:
+                {
+                    return global::Ice.ObjectImpl.iceD_ice_ping(this, inS, current);
+                }
+                case 5:
+                {
+                    return iceD_initializeAudioPlayer(this, inS, current);
+                }
+                case 6:
+                {
+                    return iceD_pause(this, inS, current);
+                }
+                case 7:
+                {
+                    return iceD_play(this, inS, current);
                 }
             }
 

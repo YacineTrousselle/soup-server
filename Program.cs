@@ -1,8 +1,10 @@
 ﻿using FirstServer.iceImpl.Soup;
 using FirstServer.service;
 using Ice;
+using LibVLCSharp.Shared;
 using Microsoft.Extensions.Configuration;
 using Exception = System.Exception;
+using FileSenderI = FirstServer.iceImpl.Soup.FileSenderI;
 
 namespace FirstServer
 {
@@ -19,6 +21,7 @@ namespace FirstServer
         {
             try
             {
+                Core.Initialize();
                 using (Communicator communicator = Application.communicator())
                 {
                     var adapter =
@@ -38,12 +41,13 @@ namespace FirstServer
 
             return 0;
         }
-
+        
         private void InitSoup(ObjectAdapter adapter, MongoDbService mongoDbService)
         {
             adapter.add(new FileUploaderI(mongoDbService), Util.stringToIdentity("Soup.FileUploader"));
             adapter.add(new FileSenderI(mongoDbService), Util.stringToIdentity("Soup.FileSender"));
-            adapter.add(new SongDataModuleI(), Util.stringToIdentity("Soup.SongDataModule"));
+            adapter.add(new SongDataModuleI(mongoDbService), Util.stringToIdentity("Soup.SongDataModule"));
+            adapter.add(new AudioPlayerI(), Util.stringToIdentity("Soup.AudioPlayer"));
         }
     }
 
@@ -53,7 +57,6 @@ namespace FirstServer
         
         public static int Main(string[] args)
         {
-            Console.WriteLine(Environment.CurrentDirectory + " " + Directory.GetCurrentDirectory());
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("settings.json", optional: false, reloadOnChange: true);
