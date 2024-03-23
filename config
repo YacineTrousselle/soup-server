@@ -1,0 +1,2 @@
+﻿SoupAdapter.Endpoints=tcp -p 10000 -h localhost
+Ice.Default.Locator=IceGrid/Locator:tcp -h registryhost.xyz.com -p 12000
