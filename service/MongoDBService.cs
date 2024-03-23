@@ -35,7 +35,7 @@ public class MongoDbService
         return song.Id;
     }
 
-    public Song FindSongById(string songId)
+    public Song? FindSongById(string songId)
     {
         var filter = Builders<Song>.Filter.Eq("_id", ObjectId.Parse(songId));
 

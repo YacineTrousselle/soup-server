@@ -1,5 +1,4 @@
-﻿using System.Net;
-using FirstServer.service;
+﻿using FirstServer.service;
 using Ice;
 using LibVLCSharp.Shared;
 using Soup;
@@ -11,19 +10,20 @@ public class AudioPlayerI : AudioPlayerDisp_
 {
     private Dictionary<String, MediaPlayer> mediaPlayers = new();
     private LibVLC _libVlc;
-    private HttpListener _httpListener;
-
+    private MongoDbService _mongoDbService;
     private int _id;
 
-    public AudioPlayerI()
+    public AudioPlayerI(MongoDbService mongoDbService)
     {
         _libVlc = new LibVLC();
-        _httpListener = new HttpListener();
+        _mongoDbService = mongoDbService;
         _id = 0;
     }
 
     public override string initializeAudioPlayer(string songId, Current current = null)
     {
+        ArgumentNullException.ThrowIfNull(_mongoDbService.FindSongById(songId));
+        
         var rtspUrl = $"rtsp://0.0.0.0:8554/audio-{_id++}.sdp";
         MediaPlayer? mediaPlayer;
         if (!mediaPlayers.ContainsKey(rtspUrl))

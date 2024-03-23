@@ -47,7 +47,7 @@ namespace FirstServer
             adapter.add(new FileUploaderI(mongoDbService), Util.stringToIdentity("Soup.FileUploader"));
             adapter.add(new FileSenderI(mongoDbService), Util.stringToIdentity("Soup.FileSender"));
             adapter.add(new SongDataModuleI(mongoDbService), Util.stringToIdentity("Soup.SongDataModule"));
-            adapter.add(new AudioPlayerI(), Util.stringToIdentity("Soup.AudioPlayer"));
+            adapter.add(new AudioPlayerI(mongoDbService), Util.stringToIdentity("Soup.AudioPlayer"));
         }
     }
 

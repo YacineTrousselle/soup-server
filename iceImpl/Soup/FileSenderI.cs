@@ -16,7 +16,7 @@ public class FileSenderI : FileSenderDisp_
 
     public override SongData getSongData(string songId, Current current = null)
     {
-        Song song = _mongoDbService.FindSongById(songId);
+        Song? song = _mongoDbService.FindSongById(songId);
         ArgumentNullException.ThrowIfNull(song);
         byte[] data = File.ReadAllBytes(Path.Join(Program.SongPath, $"{songId}.mp3"));
 
