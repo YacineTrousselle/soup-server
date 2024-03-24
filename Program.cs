@@ -26,6 +26,8 @@ public class ApplicationI : Application
             {
                 var adapter =
                     communicator.createObjectAdapter("SoupAdapter");
+
+                _client.setDatabase(communicator.getProperties().getProperty("SoupAdapter.AdapterId"));
                 InitSoup(adapter, _client);
                 adapter.activate();
                 Console.Out.WriteLine("Server is running...");
@@ -40,7 +42,7 @@ public class ApplicationI : Application
 
         return 0;
     }
-        
+
     private void InitSoup(ObjectAdapter adapter, MongoDbService mongoDbService)
     {
         adapter.add(new FileUploaderI(mongoDbService), Util.stringToIdentity("Soup.FileUploader"));
@@ -53,7 +55,7 @@ public class ApplicationI : Application
 public class Program
 {
     public static string SongPath;
-        
+    
     public static int Main(string[] args)
     {
         var builder = new ConfigurationBuilder()
@@ -61,10 +63,10 @@ public class Program
             .AddJsonFile("settings.json", optional: false, reloadOnChange: true);
         IConfiguration configuration = builder.Build().GetSection("Properties");
         CheckConfig(configuration);
-            
+
         var client = new MongoDbService(configuration["databaseUrl"]);
         SongPath = configuration["songsPath"];
-            
+
         Application application = new ApplicationI(client);
 
         return application.main(args);

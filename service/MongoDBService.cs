@@ -9,7 +9,7 @@ namespace FirstServer.service;
 public class MongoDbService
 {
     private MongoClient _client;
-    private const string Database = "soup";
+    private string _database;
     private const string SongCollection = "songs";
 
     public MongoDbService(string databaseUrl)
@@ -22,9 +22,14 @@ public class MongoDbService
         }
     }
 
+    public void setDatabase(string database)
+    {
+        _database = database;
+    }
+    
     public IMongoCollection<Song> GetSongCollection()
     {
-        return _client.GetDatabase(Database).GetCollection<Song>(SongCollection);
+        return _client.GetDatabase(_database).GetCollection<Song>(SongCollection);
     }
 
     public ObjectId InsertNewSong(SongData songData)
