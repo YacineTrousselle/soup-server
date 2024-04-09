@@ -25,14 +25,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="songs\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="settings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="config">
+      <None Update="config.rock">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="config.edm">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

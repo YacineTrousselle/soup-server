@@ -1,0 +1,4 @@
+﻿SoupAdapter.Endpoints=tcp
+SoupAdapter.AdapterId=rock
+
+Ice.Default.Locator=IceGrid/Locator:tcp -h 127.0.0.1 -p 12000
